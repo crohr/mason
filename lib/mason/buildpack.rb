@@ -34,7 +34,7 @@ class Mason::Buildpack
     FileUtils.cp_r app, compile_dir, :preserve => true
     FileUtils.mkdir_p cache_dir
     Dir.chdir(compile_dir) do
-      IO.popen(%{ #{script("compile")} "#{compile_dir}" "#{cache_dir}" }) do |io|
+      IO.popen(%{ env -i PATH="$PATH" #{script("compile")} "#{compile_dir}" "#{cache_dir}" }) do |io|
         until io.eof?
           data = io.gets
           data.gsub!(/^-----> /, "  + ")
